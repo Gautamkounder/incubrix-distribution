@@ -1,0 +1,5 @@
+{
+  "rendition": {"title": "Rate limit demo", "body": "This destination answers 429."},
+  "targets": [{"destination": {"id": "busy-partner", "connector_key": "webhook", "config": {"simulate": "429"}},
+               "connection": {"endpoint": "https://partner.example/hooks/incubrix", "secret": "demo-secret"}}]
+}

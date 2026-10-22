@@ -1,0 +1,30 @@
+{
+  "rendition": {
+    "title": "What AI tools do you use for marketing?",
+    "body": "Curious what is working for you.",
+    "tags": [
+      "ai"
+    ],
+    "ai_generated": true
+  },
+  "targets": [
+    {
+      "destination": {
+        "id": "no-bots-group",
+        "connector_key": "assisted",
+        "config": {
+          "rules_url": "https://example.com/rules",
+          "submit_url": "https://example.com/submit",
+          "rules": {
+            "self_promo_allowed": false,
+            "frequency_cap": {
+              "max_posts": 1,
+              "window_hours": 168
+            },
+            "disclosure_required": true
+          }
+        }
+      }
+    }
+  ]
+}

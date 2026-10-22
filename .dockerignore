@@ -1,0 +1,7 @@
+.venv
+__pycache__
+.git
+dev.db
+storage
+batch_out
+.env

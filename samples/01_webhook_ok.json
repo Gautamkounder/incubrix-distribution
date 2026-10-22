@@ -1,0 +1,5 @@
+{
+  "rendition": {"title": "5 AI tools that save marketers 10 hours a week", "body": "A short guide. Full write-up: https://example.com/ai-tools", "canonical_url": "https://example.com/ai-tools", "tags": ["ai", "marketing"]},
+  "targets": [{"destination": {"id": "partner-site-1", "connector_key": "webhook"},
+               "connection": {"endpoint": "https://partner.example/hooks/incubrix", "secret": "demo-secret"}}]
+}

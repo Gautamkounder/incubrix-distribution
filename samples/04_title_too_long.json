@@ -1,0 +1,5 @@
+{
+  "rendition": {"title": "This title is far too long for a destination that only allows twenty characters", "body": "Body is fine."},
+  "targets": [{"destination": {"id": "strict-site", "connector_key": "webhook", "config": {"spec": {"title_max_chars": 20}}},
+               "connection": {"endpoint": "https://partner.example/hooks/incubrix", "secret": "demo-secret"}}]
+}

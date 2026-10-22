@@ -1,0 +1,24 @@
+{
+  "rendition": {
+    "title": "Weekly tips",
+    "body": "Three tips for creators.",
+    "ai_generated": true
+  },
+  "targets": [
+    {
+      "destination": {
+        "id": "disclosure-blog",
+        "connector_key": "webhook",
+        "config": {
+          "rules": {
+            "disclosure_required": true
+          }
+        }
+      },
+      "connection": {
+        "endpoint": "https://partner.example/hooks/incubrix",
+        "secret": "demo-secret"
+      }
+    }
+  ]
+}

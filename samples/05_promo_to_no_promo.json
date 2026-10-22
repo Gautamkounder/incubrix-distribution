@@ -1,0 +1,24 @@
+{
+  "rendition": {
+    "title": "Try our new tool!",
+    "body": "Sign up today.",
+    "is_promotional": true
+  },
+  "targets": [
+    {
+      "destination": {
+        "id": "no-promo-forum",
+        "connector_key": "webhook",
+        "config": {
+          "rules": {
+            "self_promo_allowed": false
+          }
+        }
+      },
+      "connection": {
+        "endpoint": "https://partner.example/hooks/incubrix",
+        "secret": "demo-secret"
+      }
+    }
+  ]
+}

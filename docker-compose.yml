@@ -1,0 +1,55 @@
+# Default:   docker compose up --build              -> api + postgres (files kept in a docker volume)
+# With S3:   docker compose --profile s3 up --build  -> also starts RustFS (S3-compatible) and the api uses it
+#            (set STORAGE_BACKEND=s3 in .env first)
+# MinIO's public images were withdrawn in Sept 2026, so RustFS is used as the S3-compatible store.
+# Day 2 adds local Ghost + Lemmy and mock Discourse / Dev.to servers to this file.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: incubrix
+      POSTGRES_PASSWORD: incubrix
+      POSTGRES_DB: incubrix
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U incubrix"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes: [pgdata:/var/lib/postgresql/data]
+
+  rustfs:
+    image: rustfs/rustfs:latest
+    profiles: ["s3"]
+    user: "0:0"   # lets the named volume be writable on Docker Desktop
+    environment:
+      RUSTFS_ACCESS_KEY: ${S3_ACCESS_KEY:-rustfsadmin}
+      RUSTFS_SECRET_KEY: ${S3_SECRET_KEY:-rustfsadmin}
+      RUSTFS_ADDRESS: ":9000"
+    ports: ["9000:9000", "9001:9001"]
+    volumes: [s3data:/data]
+
+  api:
+    build: .
+    ports: ["8000:8000"]
+    depends_on:
+      db: {condition: service_healthy}
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      SIMULATION_MODE: ${SIMULATION_MODE:-true}
+      DATABASE_URL: postgresql+psycopg://incubrix:incubrix@db:5432/incubrix
+      HTTP_TIMEOUT_S: ${HTTP_TIMEOUT_S:-10}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost:8000}
+      CALLBACK_SECRET: ${CALLBACK_SECRET:-change-me}
+      STORAGE_BACKEND: ${STORAGE_BACKEND:-local}
+      LOCAL_STORAGE_DIR: /srv/storage
+      S3_ENDPOINT_URL: http://rustfs:9000
+      S3_PUBLIC_ENDPOINT_URL: http://localhost:9000
+      S3_BUCKET: ${S3_BUCKET:-incubrix-outputs}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:-rustfsadmin}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:-rustfsadmin}
+    volumes: [outputs:/srv/storage]
+
+volumes:
+  pgdata:
+  s3data:
+  outputs:
